@@ -34,8 +34,14 @@ def get_zillow_data():
         # read the SQL query into a dataframe, 
         df = pd.read_sql("""SELECT *
           FROM properties_2017
-          JOIN predictions_2017 using(parcelid)
-          JOIN propertylandusetype USING(propertylandusetypeid)
+          LEFT JOIN predictions_2017 using(parcelid)
+          LEFT JOIN propertylandusetype USING(propertylandusetypeid)
+          LEFT JOIN airconditioningtype USING(airconditioningtypeid)
+          LEFT JOIN architecturalstyletype USING(architecturalstyletypeid)
+          LEFT JOIN buildingclasstype USING(buildingclasstypeid)
+          LEFT JOIN heatingorsystemtype USING(heatingorsystemtypeid)
+          LEFT JOIN storytype USING(storytypeid)
+          LEFT JOIN unique_properties USING(parcelid)
           WHERE (propertylandusetypeid = 261) OR (propertylandusetypeid = 279)
           ; """, get_connection('zillow'))
             # propertylandusetypeid = 261 and propertylandusetypeid = 279 both are the single family home category, we will be using this data set and join them both using parcelid. 
