@@ -40,6 +40,7 @@ def get_zillow_data():
           LEFT JOIN architecturalstyletype USING(architecturalstyletypeid)
           LEFT JOIN buildingclasstype USING(buildingclasstypeid)
           LEFT JOIN heatingorsystemtype USING(heatingorsystemtypeid)
+          LEFT JOIN typeconstructiontype USING(typeconstructiontypeid)
           LEFT JOIN storytype USING(storytypeid)
           LEFT JOIN unique_properties USING(parcelid)
           WHERE (propertylandusetypeid = 261) OR (propertylandusetypeid = 279)
