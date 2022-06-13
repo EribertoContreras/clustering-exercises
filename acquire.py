@@ -1,4 +1,4 @@
-# In my aquire.py folder there is a  get_connection(to help us get access to the data set from code up using our Env credentials).
+#In my aquire.py folder there is a  get_connection(to help us get access to the data set from code up using our Env credentials).
 # get_zillow_data() allows me to import the data and start to visualize it.
 
 from cgi import test
@@ -34,8 +34,7 @@ def get_zillow_data():
         # read the SQL query into a dataframe, 
         df = pd.read_sql("""SELECT *
           FROM properties_2017
-          LEFT JOIN predictions_2017 using(parcelid)
-          LEFT JOIN propertylandusetype USING(propertylandusetypeid)
+          JOIN predictions_2017 using(parcelid)
           LEFT JOIN airconditioningtype USING(airconditioningtypeid)
           LEFT JOIN architecturalstyletype USING(architecturalstyletypeid)
           LEFT JOIN buildingclasstype USING(buildingclasstypeid)
@@ -43,6 +42,7 @@ def get_zillow_data():
           LEFT JOIN typeconstructiontype USING(typeconstructiontypeid)
           LEFT JOIN storytype USING(storytypeid)
           LEFT JOIN unique_properties USING(parcelid)
+          JOIN propertylandusetype USING(propertylandusetypeid)
           WHERE (propertylandusetypeid = 261) OR (propertylandusetypeid = 279)
           ; """, get_connection('zillow'))
             # propertylandusetypeid = 261 and propertylandusetypeid = 279 both are the single family home category, we will be using this data set and join them both using parcelid. 
@@ -51,4 +51,4 @@ def get_zillow_data():
         #changing it csv because its a csv
 
         # Return the dataframe to the calling code
-        return df   
+        return df
