@@ -31,7 +31,8 @@ def get_zillow_data():
     if os.path.isfile(filename):
         return pd.read_csv(filename)
     else:
-        # read the SQL query into a dataframe, 
+        # read the SQL query into a dataframe, left join to grab data regardless of wather it shares same info, anf join regularly for center join.
+        
         df = pd.read_sql("""SELECT *
           FROM properties_2017
           JOIN predictions_2017 using(parcelid)
