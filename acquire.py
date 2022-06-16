@@ -44,7 +44,7 @@ def get_zillow_data():
           LEFT JOIN storytype USING(storytypeid)
           LEFT JOIN unique_properties USING(parcelid)
           JOIN propertylandusetype USING(propertylandusetypeid)
-          WHERE (propertylandusetypeid = 261) OR (propertylandusetypeid = 279)
+          WHERE (propertylandusetypeid = 261) OR (propertylandusetypeid = 279) OR (propertylandusetypeid = 266) OR (propertylandusetypeid = 263) OR (propertylandusetypeid = 262) OR (propertylandusetypeid = 266) OR(propertylandusetypeid = 268) OR (propertylandusetypeid = 273) OR(propertylandusetypeid = 276) OR (propertylandusetypeid = 279)
           ; """, get_connection('zillow'))
             # propertylandusetypeid = 261 and propertylandusetypeid = 279 both are the single family home category, we will be using this data set and join them both using parcelid. 
          # Write that dataframe to disk for later. Called "caching" the data for later.
