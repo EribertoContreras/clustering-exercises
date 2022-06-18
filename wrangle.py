@@ -56,7 +56,6 @@ def handle_missing_values(df, prop_required_column, prop_required_row):
     df = df.dropna(axis=0, thresh=n_required_row)
     df = df.dropna(axis=1, thresh=n_required_column)
     df = drop_columns(df)
-    # df = handle_outliers(df, cols, k)
     print('After dropping nulls. %d rows. %d cols' % df.shape)
     return df
 
