@@ -48,116 +48,47 @@ def nulls_by_columns(df):
 
 ##############################################################################################
 
-def handle_missing_value(df, prop_required_column, prop_required_row):
+def handle_missing_values(df, prop_required_column, prop_required_row):
     #this piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better).
+    print ('Before dropping nulls, %d rows, %d cols' % df.shape)
     n_required_column = round(df.shape[0] * prop_required_column)
     n_required_row = round(df.shape[1] * prop_required_row)
     df = df.dropna(axis=0, thresh=n_required_row)
     df = df.dropna(axis=1, thresh=n_required_column)
+    df = drop_columns(df)
+    # df = handle_outliers(df, cols, k)
+    print('After dropping nulls. %d rows. %d cols' % df.shape)
     return df
 
-# def null_replacements(df):
-#         # changing na values in heatingorsystemtypeid to '0'
-#         df['heatingorsystemtypeid'] = df['heatingorsystemtypeid'].replace(np.nan, 0)
-#         # replacing na values in heatingorsystemdesc to 'none' to have the data matching on top
-
-#         df['unitcnt'] = df['unitcnt'].replace(np.nan, 000)
-#         #dropping remaning null values that are not of major significance, under 2 thousand rows 
-#         df = df.dropna()
-#         return df
-
 def set_limits(df):
-    df = df[(df.bathroomcnt < 6)&(df.bedroomcnt < 8)&(df.taxvaluedollarcnt < 3000000)&(df.calculatedfinishedsquarefeet < 4000)&(df.unitcnt == 1)]
+    df = df[(df.bathroomcnt < 6)&(df.bedroomcnt < 8)&(df.taxvaluedollarcnt < 3000000)&(df.calculatedfinishedsquarefeet < 4000)]
     return df
 
 def drop_columns(df):
-    df = df.drop(columns=['buildingqualitytypeid','id','parcelid','calculatedbathnbr','propertylandusetypeid','fullbathcnt','propertyzoningdesc','rawcensustractandblock','regionidcounty',
+    df = df.drop(columns=['heatingorsystemtypeid','buildingqualitytypeid','id','parcelid','calculatedbathnbr','propertylandusetypeid','fullbathcnt','propertyzoningdesc','rawcensustractandblock','regionidcounty',
     'roomcnt','structuretaxvaluedollarcnt','assessmentyear','landtaxvaluedollarcnt','taxamount','censustractandblock',
     'id.1','transactiondate','heatingorsystemdesc','finishedsquarefeet12','propertylandusedesc','propertycountylandusecode','unitcnt'])
     return df
 
 def split(df):
     train_and_validate, test = train_test_split(df, random_state=13, test_size=.15)
-    train, validate = train_test_split(train and validate, random_state=13, test_size=.2)
+    train, validate = train_test_split(train_and_validate, random_state=13, test_size=.2)
+
     print('Train: %d rows, %d cols' % train.shape)
-    print ('Validate: %d rows, %d cols' % validate. shape)
-    print ('Test: %d rows, %d cols' % test.shape)
+    print('Validate: %d rows, %d cols' % validate.shape)
+    print('Test: %d rows, %d cols' % test.shape)
     
     return train, validate, test    
 
-def get_exploration_data(df):
-    print ('Before dropping nulls, %d rows, %d cols' % df.shape)
-    #dropping collumns that have a higher then %50 null value.
-    df = handle_missing_value(df, prop_required_column=.5, prop_required_row=.5)
-    #df = null_replacements(df)
-    df = drop_columns(df)
-    df = set_limits(df)
-    cols = features
-    features = ['bathroomcnt', 'bedroomcnt','calculatedfinishedsquarefeet','yearbuilt','lotsizesquarefeet','lotsizesquarefeet']
-    df = handle_outliers(df, cols, 1.5)
-    print('After dropping nulls. %d rows. %d cols' % df.shape)
-    train, validate, test = split(df)
-    return train, validate, test
-
-
-
-##############################################################################################
-
-def get_modeling_data(scale_data=False):
-    df = acquire()
-    print('Before dropping nulls, %d rows, %d cols' % df.shape)
-    df = handle_missing_value(df, prop_required_column=.5, prop_required_row=.5)
-    print('After dropping nulls, sd rows, %d cols' % df.shape)
-    
-    print()
-    
-    print('Before removing outliers, %d rows, %d cols' % df. shape)
-    handle_outliers(df, ['age','spending_score','annual_income'], 1.5)#"make sure to input the columns u want to handle"
-    print('after dropping nulls, %d rows, %d cols' % df.shape)
-    print()
-    
-    df = one_hot_encode(df)
-    
-    train, validate, test = split(df)
-    if scale_data:
-        return scale(train, validate, test)
-    else:
-        train, validate, test
-
-
-
-##############################################################################################
-
-def scale(train, validate, test):
-    columns_to_scale = ['age','spending_score', 'annual_income']
-    train_scaled = train.copy()
-    validate_scaled = validate.copy()
-    test_scaled = test.copy()
-    scaler = MinMaxScaler()
-    scaler.fit(train[columns_to_scale])
-    train_scaled[columns_to_scale] = scaler.transform(train[columns_to_scale])
-    validate_scaled[columns_to_scale] = scaler.transform(validate[columns_to_scale])
-    test_scaled[columns_to_scale] = scaler.transform(test[columns_to_scale])
-    return scaler, train_scaled, validate_scaled, test_scaled
-
-##############################################################################################
-def one_hot_encode(df):
-    df['is_female'] = df.gender == 'Female'
-    df = df.drop(columns='gender')
-    return df
-
-
-##############################################################################################
-
+###############################################################################################################################################
 def handle_outliers(df, cols, k):
     """this will eliminate most outliers, use a 1.5 k value if unsure because it is the most common, make sure to define cols value as the features
     you want the outliers to be handled. this should be done before running the function and outiside of it"""
-    features = ['bathroomcnt', 'bedroomcnt','calculatedfinishedsquarefeet','yearbuilt','lotsizesquarefeet','lotsizesquarefeet']
+
+    
     # Create placeholder dictionary for each columns bounds
     bounds_dict = {}
-    # get a list of all columns that are not object type
-    #k = 1.5 #common for it to always be 1.5
-    #cols = features
+   
     for col in cols:
         # get necessary iqr values
         q1 = df[col].quantile(0.25)
@@ -182,8 +113,57 @@ def handle_outliers(df, cols, k):
         
     return df
 
+def get_exploration_data(df):
 
-#////////////////////////////////////////////////////////////////////////////////
+    # k = 1.5
+    # cols = ['bathroomcnt', 'bedroomcnt','calculatedfinishedsquarefeet','yearbuilt','lotsizesquarefeet','lotsizesquarefeet']    
+    print('Before dropping nulls, %d rows, %d cols' % df.shape)
+    df = handle_missing_values(df, prop_required_column=.5, prop_required_row=.5)
+    print('After dropping nulls, %d rows, %d cols' % df.shape)
+    
+    train, validate, test = split(df)
+    
+    return train
+
+
+
+##############################################################################################
+
+def get_modeling_data(scale_data=False):
+    df = acquire()
+    print('Before dropping nulls, %d rows, %d cols' % df.shape)
+    df = handle_missing_values(df, prop_required_column=.5, prop_required_row=.5)
+    print('After dropping nulls, sd rows, %d cols' % df.shape)
+    
+    print()
+    
+    print('Before removing outliers, %d rows, %d cols' % df. shape)
+    handle_outliers(df, ['age','spending_score','annual_income'], 1.5)#"make sure to input the columns u want to handle"
+    print('after dropping nulls, %d rows, %d cols' % df.shape)
+    print()
+    
+    train, validate, test = split(df)
+    if scale_data:
+        return scale(train, validate, test)
+    else:
+        train, validate, test
+
+
+
+##############################################################################################
+
+def scale(train, validate, test):
+    columns_to_scale = ['age','spending_score', 'annual_income']
+    train_scaled = train.copy()
+    validate_scaled = validate.copy()
+    test_scaled = test.copy()
+    scaler = MinMaxScaler()
+    scaler.fit(train[columns_to_scale])
+    train_scaled[columns_to_scale] = scaler.transform(train[columns_to_scale])
+    validate_scaled[columns_to_scale] = scaler.transform(validate[columns_to_scale])
+    test_scaled[columns_to_scale] = scaler.transform(test[columns_to_scale])
+    return scaler, train_scaled, validate_scaled, test_scaled
+
 
 def nulls_by_rows(df):
     print('nulls by row:', (pd.concat([df.isna().sum(axis=1).rename('n_missing'),
