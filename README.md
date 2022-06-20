@@ -1,63 +1,87 @@
-# zillow Clustering Project
+# Zillow Clustering Project
 
 INTRODUCTION
 GOALS
 Identify drivers of logerror.
+
 Use clustering algorithms to identify predictors of logerror so that we can improve predictive property value models.
+
 use clustering algorithms and adapt them to the predictive model to beat the baseline model.
+
 PLAN
+
+
 1. Acquire Data
+
 Takeaways:
-Data is collected from the codeup cloud database with an appropriate SQL query.
-Data is imported using an acquire.py file.
-Original dataframe consisted of 71858 rows × 69 columns.
-Null values/ missing data are very common in about 50 percent of the data.
+
+- Data is collected from the codeup cloud database with an appropriate SQL query.
+- Data is imported using an acquire.py file.
+- Original dataframe consisted of 71858 rows × 69 columns.
+- Null values/ missing data are very common in about 50 percent of the data.
+
 2. Prepare
+
 - using wrangle.py
+
 Takeaways:
-Bfore cleaning data and dropping unnecesary columns, 71858 rows × 69 columns.
-After dropping nulls and collumns, 44679 rows × 12 columns.
-resulted in 62% row retention 17% column retention.
-we continued to split the data into train, validate, and test for exploration and modeling purposes.
-Questions to answer while exploring:
-Is there a correlation between bathroomcnt & logerror ?
-Is there a correlation between calculatedfinishedsquarefeet & logerror?
-Is there a correlation between bedroomcnt & logerror ?
-Is there a correlation between yearbuilt & logerror ?
-Is there a correlation between fips & logerror ?
-Is there a correlation between taxvaluedollarcnt & logerror ?
+
+- Be fore cleaning data and dropping unnecesary columns, 71858 rows × 69 columns.
+- After dropping nulls and collumns, 44679 rows × 12 columns.
+- resulted in 62% row retention 17% column retention.
+- we continued to split the data into train, validate, and test for exploration and modeling purposes.
+
+
+- Questions to answer while exploring:
+
+- Is there a correlation between bathroomcnt & logerror ?
+- Is there a correlation between calculatedfinishedsquarefeet & logerror?
+- Is there a correlation between bedroomcnt & logerror ?
+- Is there a correlation between yearbuilt & logerror ?
+- Is there a correlation between fips & logerror ?
+- Is there a correlation between taxvaluedollarcnt & logerror ?
+
+
 3a. Explore1
 -answers:
 
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror.
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bedroomcnt and logerror.
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between yearbuilt and logerror.
-Based on the correlation test above fips and log error have no correlation.
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between taxvaluedollarcnt and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bedroomcnt and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between yearbuilt and logerror.
+- Based on the correlation test above fips and log error have no correlation.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between taxvaluedollarcnt and logerror.
+
+
 3b.Explore2
 -answers:
 
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror.
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
-After running a corralation test we can reject the null hypothesis and prove that there is correlation between bedroomcnt and logerror.
-After running a corralation test We reject the null hypothesis because there is significant correlation with year built and logerror present.
-Based on the correlation test above fips and log error have no correlation.
-After running a corralation test We fail to reject the null hypothesis because there is no significant correlation between taxvaluedollarcnt anf logerror present.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is correlation between bedroomcnt and logerror.
+- After running a corralation test We reject the null hypothesis because there is significant correlation with year built and logerror present.
+- Based on the correlation test above fips and log error have no correlation.
+- After running a corralation test We fail to reject the null hypothesis because there is no significant correlation between taxvaluedollarcnt anf logerror present.
+
+
 3c.Explore3
 -answers:
 
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror
-After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
-After running a corralation test we reject the null hypothesis and prove that there is correlation between bedroomcnt and logerror.
-After running a corralation test We reject the null hypothesis because there is a significant correlation between yearbuilt and logerror present.
-After running a corralation test we we fail to reject the null hypothesis because there is no significant correlation present between taxvaluedollarcnt and logerror.
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between bathroomcnt and logerror
+- After running a corralation test we can reject the null hypothesis and prove that there is a correlation between calculatedfinishedsquarefeet and logerror.
+- After running a corralation test we reject the null hypothesis and prove that there is correlation between bedroomcnt and logerror.
+- After running a corralation test We reject the null hypothesis because there is a significant correlation between yearbuilt and logerror present.
+- After running a corralation test we we fail to reject the null hypothesis because there is no significant correlation present between taxvaluedollarcnt and logerror.
+
+
 4.Modeling:
-Conclusion for clusters 1, 2, & 3
-The OLS model outperformed (lassolars and polynomial regression) models with fractions of a decimal.
+- Conclusion for clusters 1, 2, & 3
+- The OLS model outperformed (lassolars and polynomial regression) models with fractions of a decimal.
 please reference project notebook for all model information)
+
 Conclusion:
 We were able to get close to beating the baseline but did not succeed at creating a better model
+
 Suggestions:
 looking further into the data for variables such as month, school zone, school district, retirement area, prior death in home,and using variables like Previous purchase price and date.
 
