@@ -177,4 +177,4 @@ def null_row_removal(df):
     df = df.dropna()
     return df
 
-
+#
