@@ -49,13 +49,18 @@ def nulls_by_columns(df):
 ##############################################################################################
 
 def handle_missing_values(df, prop_required_column, prop_required_row):
-    #this piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better).
+    """this piece of code allows us to handle the missing data and get rid of it, both in the columns and in the rows(so that we can analize better)."""
     print ('Before dropping nulls, %d rows, %d cols' % df.shape)
     n_required_column = round(df.shape[0] * prop_required_column)
     n_required_row = round(df.shape[1] * prop_required_row)
+    # drops based on percentage missing in row
     df = df.dropna(axis=0, thresh=n_required_row)
+    #drops na based on percentage missing in collumn
     df = df.dropna(axis=1, thresh=n_required_column)
+    #drops na values in colums
     df = drop_columns(df)
+    #dropping.
+    df = df.dropna()
     print('After dropping nulls. %d rows. %d cols' % df.shape)
     return df
 
@@ -64,9 +69,11 @@ def set_limits(df):
     return df
 
 def drop_columns(df):
+    """ using this function to drop columns that i wont be using for exploration stage of this project"""
+    # drop function to remove columns
     df = df.drop(columns=['heatingorsystemtypeid','buildingqualitytypeid','id','parcelid','calculatedbathnbr','propertylandusetypeid','fullbathcnt','propertyzoningdesc','rawcensustractandblock','regionidcounty',
     'roomcnt','structuretaxvaluedollarcnt','assessmentyear','landtaxvaluedollarcnt','taxamount','censustractandblock',
-    'id.1','transactiondate','heatingorsystemdesc','finishedsquarefeet12','propertylandusedesc','propertycountylandusecode','unitcnt','regionidcounty'])
+    'id.1','transactiondate','heatingorsystemdesc','finishedsquarefeet12','propertylandusedesc','propertycountylandusecode','unitcnt'])
     return df
 
 def split(df):
@@ -113,17 +120,12 @@ def handle_outliers(df, cols, k):
     return df
 
 def get_exploration_data(df):
-
-    # k = 1.5
-    # cols = ['bathroomcnt', 'bedroomcnt','calculatedfinishedsquarefeet','yearbuilt','lotsizesquarefeet','lotsizesquarefeet']    
+    #drops rows and columns with more than %50 data missing
     print('Before dropping nulls, %d rows, %d cols' % df.shape)
+    # calls on function from above and we give it a no .5 value to drop na with over %50 data missing
     df = handle_missing_values(df, prop_required_column=.5, prop_required_row=.5)
     print('After dropping nulls, %d rows, %d cols' % df.shape)
-    
-    train, validate, test = split(df)
-    
-    return train
-
+    return df
 
 
 ##############################################################################################
