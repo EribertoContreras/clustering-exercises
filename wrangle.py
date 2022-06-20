@@ -4,7 +4,7 @@ import seaborn as sns
 import scipy.stats as stats
 import pandas as pd
 import matplotlib.pyplot as plt
-import env
+#import env
 from pydataset import data
 import scipy.stats
 import scipy
